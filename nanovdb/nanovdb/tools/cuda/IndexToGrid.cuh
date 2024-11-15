@@ -183,7 +183,7 @@ __global__ void processRootTilesKernel(typename IndexToGrid<SrcBuildT>::NodeAcce
     auto &dstTile = *nodeAcc->template dstRoot<DstBuildT>().tile(tid);
     dstTile.key   = srcTile.key;
     if (srcTile.child) {
-        dstTile.child = sizeof(NanoRoot<DstBuildT>) + sizeof(NanoRoot<DstBuildT>::Tile)*((srcTile.child - sizeof(NanoRoot<SrcBuildT>))/sizeof(NanoRoot<SrcBuildT>::Tile));
+        dstTile.child = sizeof(NanoRoot<DstBuildT>) + sizeof(typename NanoRoot<DstBuildT>::Tile)*((srcTile.child - sizeof(NanoRoot<SrcBuildT>))/sizeof(typename NanoRoot<SrcBuildT>::Tile));
         dstTile.value = srcValues[0];// set to background
         dstTile.state = false;
     } else {
