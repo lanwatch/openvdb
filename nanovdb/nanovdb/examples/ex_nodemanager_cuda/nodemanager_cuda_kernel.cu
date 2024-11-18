@@ -31,7 +31,11 @@ extern "C" void launch_kernels(const nanovdb::NodeManager<float>* deviceMgr,
 
 // Simple wrapper that makes sure nanovdb::cuda::createNodeManager is initiated
 extern "C" void cudaCreateNodeManager(const nanovdb::NanoGrid<float> *d_grid,
-                                      nanovdb::NodeManagerHandle<nanovdb::CudaDeviceBuffer> *handle)
+                                      nanovdb::NodeManagerHandle<nanovdb::cuda::DeviceBuffer> *handle)
 {
     *handle = std::move(nanovdb::cuda::createNodeManager<float>(d_grid));
 }
+
+#if defined(NANOVDB_USE_CUDA)
+template nanovdb::GridHandle<nanovdb::cuda::DeviceBuffer>::GridHandle(nanovdb::cuda::DeviceBuffer&&);
+#endif

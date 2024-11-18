@@ -2841,11 +2841,11 @@ TEST(TestNanoVDBCUDA, cudaIsValid)
     EXPECT_TRUE(d_grid);
     const bool verbose = false;
 
-    EXPECT_TRUE(nanovdb::isValid(grid,        mode, verbose));
+    EXPECT_TRUE(nanovdb::tools::isValid(grid,        mode, verbose));
     EXPECT_TRUE(nanovdb::tools::cuda::isValid(d_grid,  mode, verbose));
 
     grid->mGridType = nanovdb::GridType::Vec3f;
-    EXPECT_FALSE(nanovdb::isValid(grid,       mode, verbose));
+    EXPECT_FALSE(nanovdb::tools::isValid(grid,       mode, verbose));
     handle.deviceUpload();
     EXPECT_FALSE(nanovdb::tools::cuda::isValid(d_grid, mode, verbose));
 }// cudaIsValid

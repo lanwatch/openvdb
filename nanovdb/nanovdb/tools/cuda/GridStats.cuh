@@ -17,6 +17,7 @@
 
 #include <nanovdb/NanoVDB.h>
 #include <nanovdb/tools/GridStats.h>
+#include <nanovdb/cuda/DeviceBuffer.h>
 
 namespace nanovdb {
 
@@ -191,7 +192,7 @@ void GridStats<BuildT, StatsT>::update(NanoGrid<BuildT> *d_grid, cudaStream_t st
     static const uint32_t threadsPerBlock = 128;
     auto blocksPerGrid = [&](uint32_t count)->uint32_t{return (count + (threadsPerBlock - 1)) / threadsPerBlock;};
 
-    auto nodeMgrHandle = nanovdb::cuda::createNodeManager(d_grid, CudaDeviceBuffer(), stream);
+    auto nodeMgrHandle = nanovdb::cuda::createNodeManager(d_grid, nanovdb::cuda::DeviceBuffer(), stream);
     auto *d_nodeMgr = nodeMgrHandle.template deviceMgr<BuildT>();
 
     uint32_t nodeCount[3];// {leaf, lower, upper}

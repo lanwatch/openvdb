@@ -24,3 +24,7 @@ extern "C"  void scaleActiveVoxels(nanovdb::FloatGrid *grid_d, uint64_t leafCoun
     thrust::counting_iterator<uint64_t, thrust::device_system_tag> iter(0);
     thrust::for_each(iter, iter + 512*leafCount, kernel);
 }
+
+#if defined(NANOVDB_USE_CUDA)
+template nanovdb::GridHandle<nanovdb::cuda::DeviceBuffer>::GridHandle(nanovdb::cuda::DeviceBuffer&&);
+#endif

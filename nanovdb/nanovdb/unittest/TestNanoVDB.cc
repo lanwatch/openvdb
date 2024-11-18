@@ -5,6 +5,7 @@
 //#define DISABLE_PNANOVDB
 
 #include <iostream>
+#include <iomanip>
 #include <cstdlib>
 #include <sstream> // for std::stringstream
 #include <vector>

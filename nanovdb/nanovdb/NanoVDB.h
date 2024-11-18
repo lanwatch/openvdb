@@ -1325,19 +1325,19 @@ public:
         return b ? (n << 6) + util::findLowestOn(b) : SIZE; // catch last word=0
     }
 
-    NANOVDB_HOSTDEV_DISABLE_WARNING
-    template<bool ON>
-    __hostdev__ uint32_t findPrev(uint32_t start) const
-    {
-        uint32_t n = start >> 6; // initiate
-        if (n >= WORD_COUNT) return SIZE; // check for out of bounds
-        uint32_t m = start & 63u;
-        uint64_t b = ON ? mWords[n] : ~mWords[n];
-        if (b & (uint64_t(1u) << m)) return start; // simple case: start is on/off
-        b &= (uint64_t(1u) << m) - 1u; // mask out higher bits
-        while (!b && n) b = ON ? mWords[--n] : ~mWords[--n]; // find previous non-zero word
-        return b ? (n << 6) + util::findHighestOn(b) : SIZE; // catch first word=0
-    }
+        NANOVDB_HOSTDEV_DISABLE_WARNING
+        template<bool ON>
+        __hostdev__ uint32_t findPrev(uint32_t start) const
+        {
+            uint32_t n = start >> 6; // initiate
+            if (n >= WORD_COUNT) return SIZE; // check for out of bounds
+            uint32_t m = start & 63u;
+            uint64_t b = ON ? mWords[n] : ~mWords[n];
+            if (b & (uint64_t(1u) << m)) return start; // simple case: start is on/off
+            b &= (uint64_t(1u) << m) - 1u; // mask out higher bits
+            while (!b && n) b = ON ? mWords[--n] : ~mWords[--n]; // find previous non-zero word
+            return b ? (n << 6) + util::findHighestOn(b) : SIZE; // catch first word=0
+        }
 
 private:
     uint64_t mWords[WORD_COUNT];
