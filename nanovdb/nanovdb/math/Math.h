@@ -350,19 +350,19 @@ public:
     using IndexType = uint32_t;
 
     /// @brief Initialize all coordinates to zero.
-    __hostdev__ Coord()
+    constexpr __hostdev__ Coord()
         : mVec{0, 0, 0}
     {
     }
 
     /// @brief Initializes all coordinates to the given signed integer.
-    __hostdev__ explicit Coord(ValueType n)
+    constexpr __hostdev__ explicit Coord(ValueType n)
         : mVec{n, n, n}
     {
     }
 
     /// @brief Initializes coordinate to the given signed integers.
-    __hostdev__ Coord(ValueType i, ValueType j, ValueType k)
+    constexpr __hostdev__ Coord(ValueType i, ValueType j, ValueType k)
         : mVec{i, j, k}
     {
     }
