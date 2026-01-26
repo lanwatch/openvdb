@@ -28,9 +28,6 @@ on:
       - 'fvdb/**'
       - 'pendingchanges/**'
       - '**.md'
-  schedule:
-    # run this workflow every day 7am UTC
-    - cron:  '0 7 * * *'
   workflow_dispatch:
 
 # Allow subsequent pushes to the same PR or REF to cancel any previous jobs.
@@ -163,7 +160,7 @@ jobs:
       run: |
         ./ci/build.sh -v \
           --build-type=Release \
-          --components="core,hou,bin,view,render,python,test,axcore,axbin" \
+          --components="core,hou,bin,view,render,test,axcore,axbin" \
           --cargs=\" \
             -DHOUDINI_ROOT=$HOME/houdini_install/hou \
             -DOPENVDB_BUILD_HOUDINI_ABITESTS=OFF \

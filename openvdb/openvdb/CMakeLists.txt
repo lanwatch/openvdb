@@ -330,6 +330,7 @@ if(USE_EXPLICIT_INSTANTIATION)
 
   set(OPENVDB_LIBRARY_INSTANTIATION_ALL_TREES
     MaskTree
+    HalfTree
     points::PointDataTree
     ${OPENVDB_LIBRARY_INSTANTIATION_VOLUME_TREES}
   )
@@ -369,7 +370,6 @@ set(OPENVDB_LIBRARY_SOURCE_FILES
   io/Queue.cc
   io/Stream.cc
   io/TempFile.cc
-  math/Half.cc
   math/Maps.cc
   math/Proximity.cc
   math/QuantizedUnitVec.cc
@@ -418,7 +418,7 @@ set(OPENVDB_LIBRARY_MATH_INCLUDE_FILES
   math/Coord.h
   math/DDA.h
   math/FiniteDifference.h
-  math/Half.h
+  math/HalfDecl.h
   math/Maps.h
   math/Mat.h
   math/Mat3.h
@@ -457,10 +457,12 @@ set(OPENVDB_LIBRARY_POINTS_INCLUDE_FILES
   points/PointRasterizeFrustum.h
   points/PointRasterizeSDF.h
   points/PointRasterizeTrilinear.h
+  points/PointReplicate.h
   points/PointSample.h
   points/PointScatter.h
   points/PointStatistics.h
   points/PointTransfer.h
+  points/PrincipalComponentAnalysis.h
   points/StreamCompression.h
 )
 
@@ -472,6 +474,7 @@ set(OPENVDB_LIBRARY_POINTS_IMPL_INCLUDE_FILES
   points/impl/PointGroupImpl.h
   points/impl/PointMaskImpl.h
   points/impl/PointMoveImpl.h
+  points/impl/PointRasterizeEllipsoidsSDFImpl.h
   points/impl/PointRasterizeFrustumImpl.h
   points/impl/PointRasterizeSDFImpl.h
   points/impl/PointRasterizeTrilinearImpl.h
@@ -479,6 +482,7 @@ set(OPENVDB_LIBRARY_POINTS_IMPL_INCLUDE_FILES
   points/impl/PointSampleImpl.h
   points/impl/PointScatterImpl.h
   points/impl/PointStatisticsImpl.h
+  points/impl/PrincipalComponentAnalysisImpl.h
 )
 
 set(OPENVDB_LIBRARY_TOOLS_INCLUDE_FILES
@@ -576,6 +580,11 @@ set(OPENVDB_LIBRARY_UTIL_INCLUDE_FILES
 set(OPENVDB_LIBRARY_THREAD_INCLUDE_FILES
   thread/Threading.h
 )
+
+list(APPEND OPENVDB_LIBRARY_MATH_INCLUDE_FILES
+  ${CMAKE_SOURCE_DIR}/ext/imath/openvdb/math/Half.h)
+list(APPEND OPENVDB_LIBRARY_SOURCE_FILES
+  ${CMAKE_SOURCE_DIR}/ext/imath/openvdb/math/Half.cc)
 
 ##########################################################################
 
@@ -675,6 +684,10 @@ if(OPENVDB_CORE_STATIC)
     PRIVATE .
   )
 
+  if(NOT USE_IMATH_HALF)
+    target_include_directories(openvdb_static PUBLIC ${CMAKE_SOURCE_DIR}/ext/imath)
+  endif()
+
   target_compile_definitions(openvdb_static
     PUBLIC ${OPENVDB_CORE_PUBLIC_DEFINES} -DOPENVDB_STATICLIB
     PRIVATE ${OPENVDB_CORE_PRIVATE_DEFINES}
@@ -707,6 +720,10 @@ if(OPENVDB_CORE_SHARED)
     PUBLIC ../ ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_BINARY_DIR}/openvdb
     PRIVATE .
   )
+
+  if(NOT USE_IMATH_HALF)
+    target_include_directories(openvdb_shared PUBLIC ${CMAKE_SOURCE_DIR}/ext/imath)
+  endif()
 
   target_compile_definitions(openvdb_shared
     PUBLIC ${OPENVDB_CORE_PUBLIC_DEFINES} -DOPENVDB_DLL
