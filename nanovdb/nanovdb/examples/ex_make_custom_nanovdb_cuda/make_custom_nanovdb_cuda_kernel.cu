@@ -34,3 +34,7 @@ extern "C" void launch_kernels(const nanovdb::NanoGrid<float>* deviceGrid,
     // Launch the host "kernel" (synchronously)
     cpu_kernel(cpuGrid);
 }
+
+#if defined(NANOVDB_USE_CUDA)
+template nanovdb::GridHandle<nanovdb::cuda::DeviceBuffer>::GridHandle(nanovdb::cuda::DeviceBuffer&&);
+#endif

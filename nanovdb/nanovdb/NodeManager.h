@@ -316,8 +316,8 @@ NodeManagerHandle<BufferT> createNodeManager(const NanoGrid<BuildT> &grid,
 
 } // namespace nanovdb
 
-#if defined(__CUDACC__)
+#if defined(__CUDACC__) && !defined(NANOVDB_DO_NOT_INCLUDE_CUH_FROM_H)
 #include <nanovdb/cuda/NodeManager.cuh>
-#endif// defined(__CUDACC__)
+#endif// defined(__CUDACC__) && !defined(NANOVDB_DO_NOT_INCLUDE_CUH_FROM_H)
 
 #endif // NANOVDB_NODEMANAGER_H_HAS_BEEN_INCLUDED

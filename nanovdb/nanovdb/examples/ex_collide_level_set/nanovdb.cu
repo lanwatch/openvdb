@@ -153,3 +153,7 @@ void runNanoVDB(nanovdb::GridHandle<BufferT>& handle, int numIterations, int num
     }
 #endif
 }
+
+#if defined(NANOVDB_USE_CUDA)
+template nanovdb::GridHandle<nanovdb::cuda::DeviceBuffer>::GridHandle(nanovdb::cuda::DeviceBuffer&&);
+#endif
